@@ -1,30 +1,9 @@
-/* =============================================================
-	INTRODUCTION TO GAME PROGRAMMING SE102
-	
-	SAMPLE 05 - SCENE MANAGER
-
-	This sample illustrates how to:
-
-		1/ Read scene (textures, sprites, animations and objects) from files 
-		2/ Handle multiple scenes in game
-
-	Key classes/functions:
-		CScene
-		CPlayScene		
-
-
-HOW TO INSTALL Microsoft.DXSDK.D3DX
-===================================
-1) Tools > NuGet package manager > Package Manager Console
-2) execute command :  Install-Package Microsoft.DXSDK.D3DX
-
-
-================================================================ */
-
 #include <windows.h>
 #include <d3d10.h>
 #include <d3dx10.h>
 #include <list>
+#include <iostream>
+#include <sstream>
 
 #include "debug.h"
 #include "Game.h"
@@ -51,6 +30,8 @@ HOW TO INSTALL Microsoft.DXSDK.D3DX
 
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 240
+
+#define MAX_FRAME_RATE 60
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -153,6 +134,9 @@ int Run()
 	ULONGLONG frameStart = GetTickCount64();
 	DWORD tickPerFrame = 1000 / MAX_FRAME_RATE;
 
+	int frameCount = 0;
+	ULONGLONG fpsStartTime = frameStart;
+
 	while (!done)
 	{
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -162,7 +146,7 @@ int Run()
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-
+		
 		ULONGLONG now = GetTickCount64();
 
 		// dt: the time between (beginning of last frame) and now
@@ -176,11 +160,21 @@ int Run()
 			CGame::GetInstance()->ProcessKeyboard();			
 			Update(dt);
 			Render();
+			
+			frameCount++;
+			if (now - fpsStartTime >= 1000)
+			{
+				std::wstringstream ss;
+				ss << L"FPS: " << frameCount << L" dt= " << dt << std::endl;
+				OutputDebugString(ss.str().c_str());
+				frameCount = 0;
+				fpsStartTime = now;
+			}
 
 			CGame::GetInstance()->SwitchScene();
 		}
-		else
-			Sleep(tickPerFrame - dt);	
+	/*	else
+			Sleep(tickPerFrame - dt);	*/
 	}
 
 	return 1;

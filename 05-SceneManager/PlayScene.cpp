@@ -39,12 +39,12 @@ void CPlayScene::_ParseSection_SPRITES(string line)
 	if (tokens.size() < 6) return; // skip invalid lines
 
 	int ID = atoi(tokens[0].c_str());
-	int l = atoi(tokens[1].c_str());
-	int t = atoi(tokens[2].c_str());
-	int r = atoi(tokens[3].c_str());
-	int b = atoi(tokens[4].c_str());
+	int left = atoi(tokens[1].c_str());
+	int top = atoi(tokens[2].c_str());
+	int right = atoi(tokens[3].c_str());
+	int bot = atoi(tokens[4].c_str());
 	int texID = atoi(tokens[5].c_str());
-
+	
 	LPTEXTURE tex = CTextures::GetInstance()->Get(texID);
 	if (tex == NULL)
 	{
@@ -52,7 +52,7 @@ void CPlayScene::_ParseSection_SPRITES(string line)
 		return; 
 	}
 
-	CSprites::GetInstance()->Add(ID, l, t, r, b, tex);
+	CSprites::GetInstance()->Add(ID, left, top, right, bot, tex);
 }
 
 void CPlayScene::_ParseSection_ASSETS(string line)

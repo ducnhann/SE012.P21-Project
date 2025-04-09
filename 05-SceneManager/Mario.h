@@ -6,16 +6,17 @@
 
 #include "debug.h"
 
-#define MARIO_WALKING_SPEED		0.1f
-#define MARIO_RUNNING_SPEED		0.2f
+#define MARIO_WALKING_SPEED		0.15f
+#define MARIO_RUNNING_SPEED		0.25f
 
-#define MARIO_ACCEL_WALK_X	0.0005f
+#define MARIO_ACCEL_WALK_X	0.0002f
 #define MARIO_ACCEL_RUN_X	0.0007f
 
-#define MARIO_JUMP_SPEED_Y		0.5f
+#define MARIO_JUMP_SPEED_Y		0.33f
 #define MARIO_JUMP_RUN_SPEED_Y	0.6f
 
-#define MARIO_GRAVITY			0.002f
+#define MARIO_GRAVITY_FAST			0.000625f
+#define MARIO_GRAVITY_SLOW			0.002f
 
 #define MARIO_JUMP_DEFLECT_SPEED  0.4f
 
@@ -127,7 +128,7 @@ public:
 		isSitting = false;
 		maxVx = 0.0f;
 		ax = 0.0f;
-		ay = MARIO_GRAVITY; 
+		ay = MARIO_GRAVITY_FAST;
 
 		level = MARIO_LEVEL_BIG;
 		untouchable = 0;
